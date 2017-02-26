@@ -1,5 +1,5 @@
 #include <ESP8266httpUpdate.h>
-#include "CarDetector.h"
+#include "MqttCarDetector.h"
 
 const unsigned int wifi_timeout_sec = 20;
 

@@ -1,5 +1,5 @@
 #include <PubSubClient.h>
-#include "CarDetector.h"
+#include "MqttCarDetector.h"
 
 const unsigned int mqtt_connection_retry = 10;
 
