@@ -38,7 +38,8 @@ int otaUpdate(const char*, const char*, bool);
 void mqttConfig(void);
 int mqttConnect(void);
 int mqttInit(void);
-int mqttProcess(bool, unsigned int, const char*);
+int mqttProcess(const char*);
+int mqttProcess(bool, unsigned int);
 void mqttLoop(void);
 
 int lpf(int data, float lp_val, float previous_val);

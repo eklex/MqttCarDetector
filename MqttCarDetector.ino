@@ -5,7 +5,7 @@
  */
 /* Firmware version 
  * Note: Need to be updated to reflect release number */
-const char* firmware_version = "car-detector-rel0.2";
+const char* firmware_version = "car-detector-rel0.4";
 /* LED pin output */
 const unsigned int led_pin = 5;
 const unsigned int built_in_led = 2;
@@ -14,7 +14,7 @@ const unsigned int sensor_pin = A0;
 /* Sensor measurement delay (ms) */
 const unsigned long sensor_measure_delay = 50;
 /* Sensor thresold for moving car */
-const unsigned long sensor_threshold_on = 100;
+const unsigned long sensor_threshold_on = 200;
 const unsigned long sensor_threshold_off = 20;
 /* Low-Pass filter coeff */
 const float sensor_lpf = 0.8;
@@ -119,7 +119,7 @@ void setup()
    * Process MQTT topics
    */
   Debugln("\n---> Process MQTT topics");
-  mqttProcess(car_detected, sensor, firmware_version);
+  mqttProcess(firmware_version);
 
   digitalWrite(built_in_led, true);
   Debugln("\n---> ESP setup routine completed.");
@@ -199,18 +199,18 @@ void loop()
      * Publish car detected status
      */
     if(car_detected == false &&
-       sensor > 100)
+       sensor > 500)
     {
       car_detected = true;
       Debugln("Car detected");
-      mqttProcess(car_detected, sensor, NULL);
+      mqttProcess(car_detected, sensor);
     }
     else if(car_detected == true &&
-            sensor < 80)
+            sensor < 100)
     {
       car_detected = false;
       Debugln("No car detected");
-      mqttProcess(car_detected, sensor, NULL);
+      mqttProcess(car_detected, sensor);
     }
     /**
      * Reconnect to MQTT broker and process data
@@ -218,7 +218,7 @@ void loop()
     else if(millis() - last_connection > mqtt_reconnect_sec*1000)
     {
       last_connection = millis();
-      mqttProcess(car_detected, sensor, NULL);
+      mqttProcess(car_detected, sensor);
     }
     /**
      * Update Over-The-Air for file system and firmware
